@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="ko" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>센티아 - 기억되는 공간의 향기</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Noto Sans KR', sans-serif; }
+    html, body { height: 100%; margin: 0; }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #2F6BFF 0%, #5A8DEE 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(47, 107, 255, 0.15);
+    }
+    
+    .pulse-dot {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #2F6BFF 0%, #4A7FFF 100%);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(47, 107, 255, 0.4);
+    }
+    
+    .comparison-card {
+      backdrop-filter: blur(10px);
+    }
+    
+    .icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #2F6BFF;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto"><!-- Sticky Top CTA Banner -->
+  <div class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#E63946] to-[#D62828] px-4 py-3 shadow-lg">
+   <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="flex-1 text-center md:text-left">
+     <p class="text-white text-sm md:text-base font-semibold">🎯 <span class="font-bold">10만원대부터</span> 시작하는 시그니처 향 설계 <span class="hidden md:inline ml-2">|</span> <span class="hidden md:inline ml-2 text-red-100">7일 한정 사전예약</span></p>
+    </div><button class="bg-white text-[#E63946] px-6 py-2 rounded-full text-sm md:text-base font-bold hover:bg-red-50 transition-colors flex-shrink-0 whitespace-nowrap"> 사전예약하기 </button>
+   </div>
+  </div><!-- Add padding to body to account for fixed banner -->
+  <div id="app-wrapper" class="w-full min-h-full pt-16"><!-- 1️⃣ 히어로 섹션 -->
+   <section class="w-full bg-[#F4F8FC] py-16 md:py-24 px-4">
+    <div class="max-w-4xl mx-auto text-center"><span id="hero-badge" class="inline-block bg-white px-4 py-2 rounded-full text-sm text-[#5A8DEE] font-medium mb-6 shadow-sm"> 🚀 기억되는 공간의 비밀 </span>
+     <h1 id="hero-headline" class="text-3xl md:text-5xl font-bold text-[#1A1A1A] leading-tight mb-6">왜 어떤 숙소는<br><span class="gradient-text">1년 내내 예약이 꾸준할까요?</span></h1>
+     <p class="text-[#6B7280] text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">가격을 계속 조정하지 않아도,<br>
+       광고비를 계속 올리지 않아도—<br>
+       고객이 <strong class="text-[#1A1A1A]">"기억하는 공간"</strong>은 계속 선택됩니다.</p><button id="hero-cta" class="btn-primary text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg"> ▶ 사전예약 혜택받기 </button>
+     <p id="hero-subtext" class="text-[#6B7280] text-sm mt-4">월 30곳 한정 맞춤 설계 진행 중</p>
+    </div>
+   </section><!-- 2️⃣ 가격 충격 섹션 -->
+   <section class="w-full bg-white py-16 md:py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="text-2xl md:text-4xl font-bold text-[#1A1A1A] mb-4">시그니처 향 제작,<br><span class="text-[#6B7280]">보통 얼마라고 들으셨나요?</span></h2>
+     </div><!-- 비교 카드 -->
+     <div class="grid md:grid-cols-2 gap-6 mb-12"><!-- 타업체 -->
+      <div class="bg-[#FFF1F1] rounded-2xl p-8 border border-red-100">
+       <div class="text-center mb-6"><span class="text-[#E63946] font-semibold text-sm">타업체</span>
+        <h3 class="text-xl font-bold text-[#1A1A1A] mt-2">시그니처 향 제작</h3>
+        <p class="text-3xl font-bold text-[#E63946] mt-2">→ 백만 원 이상</p>
+       </div>
+       <ul class="space-y-3 text-[#6B7280]">
+        <li class="flex items-center gap-2"><span class="text-[#E63946]">✕</span> 조향 비용</li>
+        <li class="flex items-center gap-2"><span class="text-[#E63946]">✕</span> 브랜딩 비용</li>
+        <li class="flex items-center gap-2"><span class="text-[#E63946]">✕</span> 샘플 비용</li>
+        <li class="flex items-center gap-2"><span class="text-[#E63946]">✕</span> 유지 비용</li>
+       </ul>
+      </div><!-- 센티아 -->
+      <div class="bg-[#EAF7F3] rounded-2xl p-8 border border-[#2A9D8F]/20 card-hover">
+       <div class="text-center mb-6"><span class="text-[#2A9D8F] font-semibold text-sm">센티아</span>
+        <h3 class="text-xl font-bold text-[#1A1A1A] mt-2">시그니처 향 설계</h3>
+        <p class="text-3xl font-bold text-[#2A9D8F] mt-2">→ 10만원대부터</p>
+       </div>
+       <ul class="space-y-3 text-[#6B7280]">
+        <li class="flex items-center gap-2"><span class="text-[#2A9D8F]">✓</span> 공간 맞춤 설계</li>
+        <li class="flex items-center gap-2"><span class="text-[#2A9D8F]">✓</span> 샘플 체험 포함</li>
+        <li class="flex items-center gap-2"><span class="text-[#2A9D8F]">✓</span> 정기 관리 연계</li>
+        <li class="flex items-center gap-2"><span class="text-[#2A9D8F]">✓</span> 부담 없는 도입</li>
+       </ul>
+      </div>
+     </div>
+     <div class="text-center space-y-6">
+      <p class="text-[#6B7280] text-lg">많은 향 브랜딩 업체는<br>
+        조향 비용 + 개발 비용 + 브랜딩 비용으로<br><span class="line-through">100만원 이상</span>을 부릅니다.</p>
+      <div class="bg-[#F4F8FC] rounded-2xl p-8 max-w-2xl mx-auto">
+       <p class="text-2xl md:text-3xl font-bold text-[#1A1A1A] mb-4">향 브랜딩이 비싸서<br>
+         포기하셨다면,</p>
+       <p class="text-xl text-[#2F6BFF] font-semibold">이제는 아닙니다.</p>
+      </div>
+      <p class="text-lg text-[#1A1A1A] font-bold max-w-xl mx-auto leading-relaxed">향 브랜딩은 큰 브랜드만의 특권이 아닙니다.<br>
+        이제는 숙소 규모와 상관없이<br>
+        경쟁력을 만들 수 있습니다.</p>
+     </div>
+    </div>
+   </section><!-- 운영자 현실 공감 섹션 -->
+   <section class="w-full bg-white py-16 md:py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+     <h2 class="text-2xl md:text-3xl font-bold text-[#1A1A1A] text-center mb-10">이런 경험 있으시죠?</h2>
+     <div class="space-y-4 max-w-2xl mx-auto mb-10">
+      <div class="flex items-center gap-4 bg-[#F4F8FC] rounded-xl p-4"><span class="text-[#2A9D8F] text-xl flex-shrink-0">✓</span> <span class="text-[#1A1A1A]">성수기엔 잘 되는데, 비수기엔 불안하다</span>
+      </div>
+      <div class="flex items-center gap-4 bg-[#F4F8FC] rounded-xl p-4"><span class="text-[#2A9D8F] text-xl flex-shrink-0">✓</span> <span class="text-[#1A1A1A]">가격을 내려야 예약이 들어온다</span>
+      </div>
+      <div class="flex items-center gap-4 bg-[#F4F8FC] rounded-xl p-4"><span class="text-[#2A9D8F] text-xl flex-shrink-0">✓</span> <span class="text-[#1A1A1A]">후기 한 줄이 계속 신경 쓰인다</span>
+      </div>
+      <div class="flex items-center gap-4 bg-[#F4F8FC] rounded-xl p-4"><span class="text-[#2A9D8F] text-xl flex-shrink-0">✓</span> <span class="text-[#1A1A1A]">주변 숙소와 차별화가 어렵다</span>
+      </div>
+     </div>
+     <div class="text-center">
+      <p class="text-xl md:text-2xl font-bold text-[#1A1A1A]">문제는 가격이 아니라<br><span class="gradient-text">"기억에 남는 경험"</span>입니다.</p>
+     </div>
+    </div>
+   </section><!-- 3️⃣ 실제 결과 섹션 -->
+   <section class="w-full bg-[#F4F8FC] py-16 md:py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <h2 class="text-2xl md:text-3xl font-bold text-[#1A1A1A] text-center mb-12">💬 꿉꿉한 냄새 숙소 → <span class="gradient-text">게스트 상위 5% 숙소</span></h2><!-- 문제 카드 -->
+     <div class="grid md:grid-cols-2 gap-6 mb-10">
+      <div class="bg-[#F4F8FC] rounded-2xl p-6 border border-[#5A8DEE]/20 shadow-sm">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="icon-circle bg-[#FFF1F1]">
+         🏠
+        </div>
+        <h3 class="font-bold text-[#1A1A1A]">"환기해도 냄새가 남아요"</h3>
+       </div>
+       <p class="text-[#6B7280] text-sm leading-relaxed">정화조 + 습한 구조<br>
+         구조적 냄새 반복 발생</p>
+      </div>
+      <div class="bg-[#F4F8FC] rounded-2xl p-6 border border-[#5A8DEE]/20 shadow-sm">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="icon-circle bg-[#FFF1F1]">
+         😟
+        </div>
+        <h3 class="font-bold text-[#1A1A1A]">"꿉꿉한 냄새가 나는 것 같아요"</h3>
+       </div>
+       <p class="text-[#6B7280] text-sm leading-relaxed">초반 게스트들의 반복 문의<br>
+         후기 불안 시작</p>
+      </div>
+     </div>
+     <p class="text-center text-[#6B7280] mb-8">숙소 평점, 후기 관리를 위해 <strong class="text-[#1A1A1A]">'향기 브랜딩'</strong>을 도입했습니다.<br><span class="text-[#2F6BFF] font-semibold">결과는 단 4개월 만에 이렇게 달라졌습니다 👇</span></p><!-- 결과 카드 -->
+     <div class="bg-white rounded-3xl p-8 md:p-10 shadow-lg max-w-3xl mx-auto mb-10">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+       <div class="text-center"><span class="text-3xl mb-2 block">⭐</span>
+        <p class="text-2xl font-bold text-[#1F2A44]">평점 5.0</p>
+        <p class="text-[#6B7280] text-sm">유지</p>
+       </div>
+       <div class="text-center"><span class="text-3xl mb-2 block">🚫</span>
+        <p class="text-2xl font-bold text-[#1F2A44]">0건</p>
+        <p class="text-[#6B7280] text-sm">냄새 관련 부정 리뷰</p>
+       </div>
+       <div class="text-center"><span class="text-3xl mb-2 block">📈</span>
+        <p class="text-2xl font-bold text-[#1F2A44]">상위 5%</p>
+        <p class="text-[#6B7280] text-sm">진입</p>
+       </div>
+       <div class="text-center"><span class="text-3xl mb-2 block">🏆</span>
+        <p class="text-2xl font-bold text-[#1F2A44]">슈퍼호스트</p>
+        <p class="text-[#6B7280] text-sm">달성</p>
+       </div>
+       <div class="text-center col-span-2 md:col-span-2"><span class="text-3xl mb-2 block">🗓</span>
+        <p class="text-2xl font-bold text-[#1F2A44]">비수기 만실</p>
+        <p class="text-[#6B7280] text-sm">1,2월에도 거의 만실</p>
+       </div>
+      </div>
+      <div class="space-y-4 border-t pt-6">
+       <div class="bg-[#F4F8FC] rounded-xl p-4">
+        <p class="text-[#1A1A1A] italic">🗨️ "방에 들리는 음악도 안정되고, 좋은 향기가 가득했어요!"</p>
+       </div>
+       <div class="bg-[#F4F8FC] rounded-xl p-4">
+        <p class="text-[#1A1A1A] italic">🗨️ "인테리어도 아늑하고, 향도 좋고, 청결도 깔끔했습니다."</p>
+       </div>
+      </div>
+     </div>
+     <div class="text-center">
+      <p class="text-xl md:text-2xl font-bold text-[#1A1A1A]">냄새 걱정하던 숙소가 이제는 <span class="gradient-text">'향기'</span>로 기억됩니다.<br><span class="text-[#6B7280] font-normal text-lg">공간의 '기억'을 설계합니다.</span></p>
+     </div>
+    </div>
+   </section><!-- 5️⃣ 확장성 섹션 (웰컴기프트) -->
+   <section class="w-full bg-white py-16 md:py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+     <h2 class="text-2xl md:text-3xl font-bold text-[#1A1A1A] mb-6">✨ 단순 설계로 끝나지 않습니다</h2>
+     <p class="text-lg text-[#6B7280] mb-10">시그니처 향은 <strong class="text-[#1A1A1A]">브랜드 자산</strong>입니다.<br>
+       그리고 여기서 끝이 아닙니다.</p>
+     <div class="bg-[#F4F8FC] rounded-3xl p-8 md:p-10 max-w-2xl mx-auto mb-8">
+      <div class="text-4xl mb-4">
+       🎁
+      </div>
+      <h3 class="text-xl font-bold text-[#1A1A1A] mb-4">게스트용 웰컴 기프트 제작 가능</h3>
+      <div class="flex justify-center gap-6 text-[#6B7280]"><span class="flex items-center gap-2"><span class="text-[#2A9D8F]">✓</span> 미니 멀티퍼퓸</span> <span class="flex items-center gap-2"><span class="text-[#2A9D8F]">✓</span> 기념품 연계</span>
+      </div>
+     </div>
+     <p class="text-xl font-bold text-[#1A1A1A]">체크아웃 후에도<br><span class="gradient-text">당신의 숙소 향이 고객과 함께합니다.</span></p>
+    </div>
+   </section><!-- 4️⃣ 왜 1년 내내 꾸준할까? -->
+   <section class="w-full bg-white py-16 md:py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <h2 class="text-2xl md:text-3xl font-bold text-[#1A1A1A] text-center mb-12">왜 1년 내내 꾸준할까?</h2>
+     <div class="grid md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-[#F4F8FC] rounded-2xl p-8 text-center card-hover">
+       <div class="text-4xl mb-4">
+        🚪
+       </div>
+       <h3 class="font-bold text-[#1A1A1A] mb-2">체크인 순간의 인상</h3>
+       <p class="text-[#6B7280] text-sm">첫 향기가 기대감을 높입니다</p>
+      </div>
+      <div class="bg-[#F4F8FC] rounded-2xl p-8 text-center card-hover">
+       <div class="text-4xl mb-4">
+        🛋️
+       </div>
+       <h3 class="font-bold text-[#1A1A1A] mb-2">머무는 동안의 편안함</h3>
+       <p class="text-[#6B7280] text-sm">일관된 향이 편안함을 줍니다</p>
+      </div>
+      <div class="bg-[#F4F8FC] rounded-2xl p-8 text-center card-hover">
+       <div class="text-4xl mb-4">
+        💭
+       </div>
+       <h3 class="font-bold text-[#1A1A1A] mb-2">떠난 뒤에도 기억나는 공간</h3>
+       <p class="text-[#6B7280] text-sm">향기는 가장 오래 남는 기억</p>
+      </div>
+     </div>
+     <p class="text-center text-xl font-bold text-[#1A1A1A]">기억되는 공간은 <span class="gradient-text">다시 선택됩니다.</span></p>
+    </div>
+   </section><!-- 5️⃣ 일반 디퓨저 vs 센티아 -->
+   <section class="w-full bg-[#F4F8FC] py-16 md:py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <h2 class="text-2xl md:text-3xl font-bold text-[#1A1A1A] text-center mb-12">일반 디퓨저 vs 센티아</h2>
+     <div class="grid md:grid-cols-2 gap-6 mb-10"><!-- 일반 디퓨저 -->
+      <div class="bg-[#FFF1F1] rounded-2xl p-8">
+       <h3 class="text-xl font-bold text-[#E63946] mb-6 text-center">❌ 일반 디퓨저</h3>
+       <ul class="space-y-4">
+        <li class="flex items-start gap-3"><span class="text-[#E63946]">✕</span> <span class="text-[#6B7280]">향이 금방 사라짐</span></li>
+        <li class="flex items-start gap-3"><span class="text-[#E63946]">✕</span> <span class="text-[#6B7280]">직접 구매하고 교체해야 함</span></li>
+        <li class="flex items-start gap-3"><span class="text-[#E63946]">✕</span> <span class="text-[#6B7280]">어디서나 맡을 수 있는 흔한 향</span></li>
+        <li class="flex items-start gap-3"><span class="text-[#E63946]">✕</span> <span class="text-[#6B7280]">브랜딩 효과 없음</span></li>
+       </ul>
+      </div><!-- 센티아 -->
+      <div class="bg-[#EAF7F3] rounded-2xl p-8 card-hover">
+       <h3 class="text-xl font-bold text-[#2A9D8F] mb-6 text-center">✓ 센티아</h3>
+       <ul class="space-y-4">
+        <li class="flex items-start gap-3"><span class="text-[#2A9D8F]">✓</span> <span class="text-[#1A1A1A]">우리 숙소만의 시그니처 향</span></li>
+        <li class="flex items-start gap-3"><span class="text-[#2A9D8F]">✓</span> <span class="text-[#1A1A1A]">공간에 맞춤 설계된 발향량</span></li>
+        <li class="flex items-start gap-3"><span class="text-[#2A9D8F]">✓</span> <span class="text-[#1A1A1A]">정기 관리로 일정한 퀄리티 유지</span></li>
+        <li class="flex items-start gap-3"><span class="text-[#2A9D8F]">✓</span> <span class="text-[#1A1A1A]">브랜드 자산으로 활용 가능</span></li>
+       </ul>
+      </div>
+     </div>
+     <p class="text-center text-xl font-bold text-[#1A1A1A]">향은 관리 대상이 아니라 <span class="gradient-text">경쟁력</span>입니다.</p>
+    </div>
+   </section><!-- 6️⃣ 4단계 토탈 솔루션 -->
+   <section class="w-full bg-white py-16 md:py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="text-2xl md:text-3xl font-bold text-[#1A1A1A] mb-2">센티아는 이렇게 다릅니다</h2>
+      <p class="text-[#5A8DEE] font-semibold">4단계 토탈 솔루션</p>
+     </div>
+     <div class="grid md:grid-cols-4 gap-6 mb-10">
+      <div class="text-center">
+       <div class="step-number mx-auto mb-4">
+        1
+       </div>
+       <div class="text-3xl mb-3">
+        🎨
+       </div>
+       <h3 class="font-bold text-[#1A1A1A] mb-2 text-sm">공간 맞춤<br>
+         시그니처 향 설계</h3>
+       <p class="text-[#6B7280] text-xs">숙소 컨셉과 타겟 고객에 맞는 전용 시그니처 향을 선정합니다</p>
+      </div>
+      <div class="text-center">
+       <div class="step-number mx-auto mb-4">
+        2
+       </div>
+       <div class="text-3xl mb-3">
+        📦
+       </div>
+       <h3 class="font-bold text-[#1A1A1A] mb-2 text-sm">커스텀 공병<br>
+         브랜딩</h3>
+       <p class="text-[#6B7280] text-xs">로고가 들어간 전용 패키지를 제작합니다</p>
+      </div>
+      <div class="text-center">
+       <div class="step-number mx-auto mb-4">
+        3
+       </div>
+       <div class="text-3xl mb-3">
+        🔄
+       </div>
+       <h3 class="font-bold text-[#1A1A1A] mb-2 text-sm">번거로움 ZERO<br>
+         정기 관리</h3>
+       <p class="text-[#6B7280] text-xs">정기 배송으로 관리 부담을 없애고 일관된 퀄리티를 유지합니다</p>
+      </div>
+      <div class="text-center">
+       <div class="step-number mx-auto mb-4">
+        4
+       </div>
+       <div class="text-3xl mb-3">
+        🎁
+       </div>
+       <h3 class="font-bold text-[#1A1A1A] mb-2 text-sm">웰컴 기프트<br>
+         제작 가능</h3>
+       <p class="text-[#6B7280] text-xs">시그니처 향으로 고객에게 기억되는 공간을 만들어줍니다</p>
+      </div>
+     </div>
+     <p class="text-center text-xl font-bold text-[#1A1A1A]">향은 <span class="gradient-text">브랜드 자산</span>이 됩니다.</p>
+    </div>
+   </section><!-- 7️⃣ 리스크 제거 오퍼 -->
+   <section class="w-full bg-[#EAF2FA] py-16 md:py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+     <p class="text-[#6B7280] mb-4">가격을 더 낮출지, 경험을 설계할지—<br><strong class="text-[#1A1A1A]">선택은 대표님께 있습니다.</strong></p>
+     <h2 class="text-2xl md:text-3xl font-bold text-[#1A1A1A] mb-2">몇백만 원이 아닌,</h2>
+     <p class="text-3xl md:text-4xl font-bold gradient-text mb-8">10만원대부터 시작하는<br>
+       시그니처 향 설계.</p>
+     <div class="bg-white rounded-3xl p-8 shadow-lg mb-8">
+      <div class="flex items-center justify-center gap-2 mb-6"><span class="text-[#E63946] font-bold text-lg">🚨 단 7일 한정 사전예약</span>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8">
+       <!-- 왼쪽: 타이머 + 시청자 -->
+       <div class="flex flex-col items-center justify-center space-y-6">
+        <div id="countdown" class="flex gap-4">
+         <div class="bg-[#E63946] text-white rounded-lg px-4 py-2"><span class="text-2xl font-bold" id="days">06</span>
+          <p class="text-xs text-center">일</p>
+         </div>
+         <div class="bg-[#E63946] text-white rounded-lg px-4 py-2"><span class="text-2xl font-bold" id="hours">23</span>
+          <p class="text-xs text-center">시간</p>
+         </div>
+         <div class="bg-[#E63946] text-white rounded-lg px-4 py-2"><span class="text-2xl font-bold" id="minutes">45</span>
+          <p class="text-xs text-center">분</p>
+         </div>
+         <div class="bg-[#E63946] text-white rounded-lg px-4 py-2"><span class="text-2xl font-bold" id="seconds">12</span>
+          <p class="text-xs text-center">초</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-2 text-[#2A9D8F] bg-[#EAF7F3] rounded-full px-4 py-2"><span class="w-2 h-2 bg-[#2A9D8F] rounded-full pulse-dot"></span> <span class="text-sm">👀 현재 27명이 보고 있습니다</span>
+        </div>
+       </div><!-- 오른쪽: 사전예약 혜택 -->
+       <div class="space-y-4">
+        <h3 class="font-bold text-[#1A1A1A] mb-4">🎁 사전예약 혜택</h3>
+        <ul class="space-y-3">
+         <li class="flex items-center gap-3"><span class="text-[#2A9D8F] text-lg">✓</span> <span class="text-[#1A1A1A]">시그니처 향 3종 샘플 무료</span></li>
+         <li class="flex items-center gap-3"><span class="text-[#2A9D8F] text-lg">✓</span> <span class="text-[#1A1A1A]">30일 향 리디자인 보장</span></li>
+         <li class="flex items-center gap-3"><span class="text-[#2A9D8F] text-lg">✓</span> <span class="text-[#1A1A1A]">공간별 배치 가이드 제공</span></li>
+        </ul>
+       </div>
+      </div>
+     </div>
+     <p class="text-[#6B7280] mb-4">객실 수와 운영 형태만 입력하면<br>
+       맞춤 향 제안을 드립니다. <span class="text-[#5A8DEE]">(1분 소요)</span></p><button class="btn-primary text-white px-10 py-4 rounded-full text-xl font-bold shadow-xl"> ▶ 사전예약 혜택받기 </button>
+    </div>
+   </section><!-- 8️⃣ 강한 전환 문장 -->
+   <section class="w-full bg-white py-16 md:py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+     <h2 class="text-2xl md:text-3xl font-bold text-[#1A1A1A] leading-relaxed">가격 경쟁을 계속하시겠습니까,<br>
+       아니면 <span class="gradient-text">기억되는 공간</span>을 만드시겠습니까?</h2>
+    </div>
+   </section><!-- 9️⃣ 최종 CTA -->
+   <section class="w-full bg-[#F4F8FC] py-16 md:py-24 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+     <h2 class="text-2xl md:text-3xl font-bold text-[#1A1A1A] mb-6">1분 설문으로<br>
+       우리 숙소에 맞는 향 제안을 받아보세요.</h2>
+     <p class="text-xl text-[#6B7280] mb-10">당신의 숙소는 어떤 향으로 기억되나요?</p><button class="btn-primary text-white px-12 py-5 rounded-full text-xl font-bold shadow-xl"> ▶ 무료 상담 신청하기 </button>
+     <p class="text-[#6B7280] text-sm mt-6">© 2024 센티아. 기억되는 공간을 설계합니다.</p>
+    </div>
+   </section>
+  </div>
+  <script>
+    const defaultConfig = {
+      hero_badge: '🚀 기억되는 공간의 비밀',
+      hero_headline: '왜 어떤 숙소는\n1년 내내 예약이 꾸준할까요?',
+      cta_button_text: '사전예약 혜택받기',
+      cta_subtext: '월 30곳 한정 맞춤 설계 진행 중',
+      background_color: '#F4F8FC',
+      text_color: '#1A1A1A',
+      primary_color: '#2F6BFF',
+      accent_color: '#5A8DEE',
+      success_color: '#2A9D8F'
+    };
+
+    let config = { ...defaultConfig };
+
+    // Countdown timer
+    function updateCountdown() {
+      const now = new Date();
+      const endDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+      const diff = endDate - now;
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+    
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Viewer count animation
+    function updateViewerCount() {
+      const baseCount = 27;
+      const variation = Math.floor(Math.random() * 5) - 2;
+      const count = Math.max(24, baseCount + variation);
+      const viewerText = document.querySelector('.pulse-dot').parentElement;
+      if (viewerText) {
+        viewerText.innerHTML = `<span class="w-2 h-2 bg-[#2A9D8F] rounded-full pulse-dot"></span>
+          <span class="text-sm">👀 현재 ${count}명이 보고 있습니다</span>`;
+      }
+    }
+    
+    setInterval(updateViewerCount, 8000);
+
+    async function onConfigChange(cfg) {
+      config = { ...defaultConfig, ...cfg };
+      
+      const heroBadge = document.getElementById('hero-badge');
+      if (heroBadge) heroBadge.textContent = config.hero_badge;
+      
+      const heroSubtext = document.getElementById('hero-subtext');
+      if (heroSubtext) heroSubtext.textContent = config.cta_subtext;
+      
+      const heroCta = document.getElementById('hero-cta');
+      if (heroCta) heroCta.innerHTML = `▶ ${config.cta_button_text}`;
+    }
+
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.background_color || defaultConfig.background_color,
+            set: (value) => {
+              cfg.background_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => cfg.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              cfg.primary_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (value) => {
+              cfg.text_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => cfg.success_color || defaultConfig.success_color,
+            set: (value) => {
+              cfg.success_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ success_color: value });
+            }
+          },
+          {
+            get: () => cfg.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              cfg.accent_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ accent_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['hero_badge', cfg.hero_badge || defaultConfig.hero_badge],
+        ['hero_headline', cfg.hero_headline || defaultConfig.hero_headline],
+        ['cta_button_text', cfg.cta_button_text || defaultConfig.cta_button_text],
+        ['cta_subtext', cfg.cta_subtext || defaultConfig.cta_subtext]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d3c45abb286aa44',t:'MTc3MjA3NTY2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
